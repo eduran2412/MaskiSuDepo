@@ -2,6 +2,7 @@ package com.erenduran.maskisudepo;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -38,6 +39,9 @@ public class SignUpActivity extends AppCompatActivity {
                 }else{
                     Toast.makeText(getApplicationContext(),"User signed up!!!",Toast.LENGTH_LONG).show();
                     // intent (kullanıcı nereye gidecek)
+
+                    Intent intent =new Intent(getApplicationContext(),LocationsActivity.class);
+                    startActivity(intent);
                 }
             }
         });
@@ -51,6 +55,9 @@ public class SignUpActivity extends AppCompatActivity {
                 }else{
                     Toast.makeText(getApplicationContext(),"Welcome : " + user.getUsername(),Toast.LENGTH_LONG).show();
                     // intent
+
+                    Intent intent =new Intent(getApplicationContext(),LocationsActivity.class);
+                    startActivity(intent);
                 }
             }
         });
