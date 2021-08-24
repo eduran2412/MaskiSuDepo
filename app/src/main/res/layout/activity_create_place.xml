@@ -51,25 +51,25 @@
         android:id="@+id/next_button_create_place_activity"
         android:layout_width="115dp"
         android:layout_height="0dp"
+        android:layout_marginEnd="14dp"
         android:layout_marginBottom="19dp"
         android:backgroundTint="#2196F3"
         android:onClick="next"
         android:text="Sonraki"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/imageview_create_place_activity"
-        app:layout_constraintStart_toEndOf="@+id/imageview_create_place_activity"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/atmosphere_text_create_place_activity" />
 
     <ImageView
-        android:id="@+id/imageview_create_place_activity"
-        android:layout_width="267dp"
-        android:layout_height="180dp"
+        android:id="@+id/imageView5"
+        android:layout_width="259dp"
+        android:layout_height="175dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.758"
+        app:layout_constraintVertical_bias="0.724"
         app:srcCompat="@drawable/logo" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
