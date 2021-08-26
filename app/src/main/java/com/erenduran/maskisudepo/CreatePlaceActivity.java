@@ -75,6 +75,16 @@ public class CreatePlaceActivity extends AppCompatActivity {
 
     public void next(View view){
 
+        PlacesClass placesClass = PlacesClass.getInstance();
+
+        String placeName = nameText.getText().toString();
+        String placeType = typeText.getText().toString();
+        String placeAtmosphere = atmosphereText.getText().toString();
+
+        placesClass.setName(placeName);
+        placesClass.setType(placeType);
+        placesClass.setAtmosphere(placeAtmosphere);
+        placesClass.setImage(chosenImage);
 
         // intent
     }
