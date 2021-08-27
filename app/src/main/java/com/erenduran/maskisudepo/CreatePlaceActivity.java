@@ -87,5 +87,8 @@ public class CreatePlaceActivity extends AppCompatActivity {
         placesClass.setImage(chosenImage);
 
         // intent
+
+        Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+        startActivity(intent);
     }
 }
