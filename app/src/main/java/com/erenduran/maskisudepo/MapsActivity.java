@@ -13,9 +13,12 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -53,6 +56,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onLocationChanged(@NonNull Location location) {
                 //get location
+
+                LatLng userLocation = new LatLng(location.getLatitude(),location.getLongitude());
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation,15));
+
             }
 
             @Override
@@ -76,7 +83,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         } else{
             //get location
 
-     }
+             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,locationListener);
+             mMap.clear();
+
+             Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+             if(lastKnownLocation != null){
+                 LatLng lastUserLocation = new LatLng(lastKnownLocation.getLatitude(),lastKnownLocation.getLongitude());
+                 // LatLng enlem boylam
+                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lastUserLocation,15)); // zoom level 15
+
+             }
+         }
 
     }
 
@@ -88,6 +106,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             if (grantResults.length > 0){
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
                     //get location
+
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,locationListener);
+                    mMap.clear();
+
+                    Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+                    if(lastKnownLocation != null){
+                        LatLng lastUserLocation = new LatLng(lastKnownLocation.getLatitude(),lastKnownLocation.getLongitude());
+                        // LatLng enlem boylam
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lastUserLocation,15)); // zoom level 15
+
+                    }
                 }
             }
         }
