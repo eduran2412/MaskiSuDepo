@@ -19,9 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentActivity;
 
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -192,7 +190,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         // kullanıcı nereye tıkladığını görebilsin diye marker
         mMap.addMarker(new MarkerOptions().title("Yeni Tesis").position(latLng));
 
-        Toast.makeText(this,"Tesis Kaydet'e tıkla",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,"Tesis Kaydet'e tıkla",Toast.LENGTH_LONG).show();
 
     }
 
