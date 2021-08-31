@@ -2,11 +2,13 @@ package com.erenduran.maskisudepo;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -19,13 +21,19 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback , GoogleMap.OnMapLongClickListener {
 
     private GoogleMap mMap;
 
     LocationManager locationManager;
     LocationListener locationListener;
+
+    String latitudeString;
+    String longitudeString;
+    // string ten double a double dan stringe çevirmek rahat, parse a bu şekilde kaydedilecek
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +58,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+        mMap.setOnMapLongClickListener(this);
+
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
         locationListener = new LocationListener() {
@@ -57,8 +67,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onLocationChanged(@NonNull Location location) {
                 //get location
 
-                LatLng userLocation = new LatLng(location.getLatitude(),location.getLongitude());
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation,15));
+                // shared preferences kullanıcı ilk defa açıyorsa bu aktivite çağırılsın, ondan sonra çağırılmasın.
+                SharedPreferences sharedPreferences = MapsActivity.this.getSharedPreferences("com.erenduran.maskisudepo",MODE_PRIVATE);
+                boolean firstTimeCheck = sharedPreferences.getBoolean("notFirstTime",false);
+
+                //sharedPreferences içinden boolean olarak firstTimeCheck diye bir objeyi alacak, eğer bu daha önceden kayıt edilmedi ise
+                //bana false olarak gelecek
+
+                if(!firstTimeCheck){
+                    LatLng userLocation = new LatLng(location.getLatitude(),location.getLongitude());
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation,15));
+                    sharedPreferences.edit().putBoolean("notFirstTime",true).apply();
+                }
+
+
 
             }
 
@@ -121,5 +143,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
             }
         }
+    }
+
+    @Override
+    public void onMapLongClick(LatLng latLng) {
+
+        Double latitude = latLng.latitude;
+        Double longitude = latLng.longitude;
+
+        latitudeString = latitude.toString();
+        longitudeString = longitude.toString();
+
+        // kullanıcı nereye tıkladığını görebilsin diye marker
+        mMap.addMarker(new MarkerOptions().title("Yeni Tesis").position(latLng));
+
+        Toast.makeText(this,"Kaydet'e tıkla",Toast.LENGTH_SHORT).show();
+
     }
 }
