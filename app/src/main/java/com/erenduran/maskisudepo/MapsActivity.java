@@ -2,15 +2,21 @@ package com.erenduran.maskisudepo;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
@@ -23,7 +29,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback , GoogleMap.OnMapLongClickListener {
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback , GoogleMap.OnMapLongClickListener {
 
     private GoogleMap mMap;
 
@@ -34,6 +40,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     String longitudeString;
     // string ten double a double dan stringe çevirmek rahat, parse a bu şekilde kaydedilecek
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.save_place,menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    // tıklanınca ne olacağı
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        if(item.getItemId() == R.id.save_place){
+           upload();
+            // yeni eklenen tesis locations activityde gösterilecek
+            Intent intent = new Intent(getApplicationContext(),LocationsActivity.class);
+            startActivity(intent);
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,7 +186,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // kullanıcı nereye tıkladığını görebilsin diye marker
         mMap.addMarker(new MarkerOptions().title("Yeni Tesis").position(latLng));
 
-        Toast.makeText(this,"Kaydet'e tıkla",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,"Tesis Kaydet'e tıkla",Toast.LENGTH_SHORT).show();
+
+    }
+
+    public void upload(){
+        // parse upload
+
+        PlacesClass placesClass = PlacesClass.getInstance();
+        String placeName = placesClass.getName();
+        String placesType = placesClass.getType();
+        String placesAtmosphere = placesClass.getAtmosphere();
+        Bitmap placeImage = placesClass.getImage();
+
 
     }
 }
