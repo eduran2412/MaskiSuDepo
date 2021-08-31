@@ -28,6 +28,13 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.parse.ParseException;
+import com.parse.ParseFile;
+import com.parse.ParseObject;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
+
+import java.io.ByteArrayOutputStream;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback , GoogleMap.OnMapLongClickListener {
 
@@ -56,9 +63,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         if(item.getItemId() == R.id.save_place){
            upload();
-            // yeni eklenen tesis locations activityde gösterilecek
-            Intent intent = new Intent(getApplicationContext(),LocationsActivity.class);
-            startActivity(intent);
+
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -195,9 +201,38 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         PlacesClass placesClass = PlacesClass.getInstance();
         String placeName = placesClass.getName();
-        String placesType = placesClass.getType();
-        String placesAtmosphere = placesClass.getAtmosphere();
+        String placeType = placesClass.getType();
+        String placeAtmosphere = placesClass.getAtmosphere();
         Bitmap placeImage = placesClass.getImage();
+
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        placeImage.compress(Bitmap.CompressFormat.PNG,50,byteArrayOutputStream);
+        byte[] bytes = byteArrayOutputStream.toByteArray(); // resim bytes içine kaydedildi
+
+        ParseFile parseFile = new ParseFile("image.png",bytes);
+
+        ParseObject object = new ParseObject("Places");
+        object.put("image",parseFile);
+        object.put("name",placeName);
+        object.put("type",placeType);
+        object.put("atmosphere",placeAtmosphere);
+        object.put("latitude",latitudeString);
+        object.put("longitude",longitudeString);
+        object.put("username", ParseUser.getCurrentUser().getUsername()); // işlemi kim yapmış
+
+        object.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if(e != null){
+                    Toast.makeText(getApplicationContext(),e.getLocalizedMessage(),Toast.LENGTH_LONG).show();
+                }else {
+                    // yeni eklenen tesis locations activityde gösterilecek
+                    Intent intent = new Intent(getApplicationContext(), LocationsActivity.class);
+                    startActivity(intent);
+                }
+            }
+        });
+
 
 
     }
