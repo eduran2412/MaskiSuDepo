@@ -15,9 +15,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.parse.FindCallback;
+import com.parse.LogOutCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +47,19 @@ public class LocationsActivity extends AppCompatActivity {
 
             Intent intent = new Intent(getApplicationContext(),CreatePlaceActivity.class);
             startActivity(intent);
+        } else if (item.getItemId() == R.id.log_out){
+            ParseUser.logOutInBackground(new LogOutCallback() {
+                @Override
+                public void done(ParseException e) {
+                    if (e != null){
+                        Toast.makeText(getApplicationContext(),e.getLocalizedMessage(),Toast.LENGTH_LONG).show();
+
+                    } else {
+                        Intent intent = new Intent(getApplicationContext(),SignUpActivity.class);
+                        startActivity(intent);
+                    }
+                }
+            });
         }
         return super.onOptionsItemSelected(item);
     }

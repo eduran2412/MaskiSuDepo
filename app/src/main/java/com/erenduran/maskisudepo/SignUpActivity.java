@@ -1,12 +1,12 @@
 package com.erenduran.maskisudepo;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.parse.LogInCallback;
 import com.parse.ParseException;
@@ -24,6 +24,13 @@ public class SignUpActivity extends AppCompatActivity {
 
         usernameText = findViewById(R.id.user_name_signup_activity);
         passwordText = findViewById(R.id.password_text_signp_activity);
+
+        ParseUser parseUser = ParseUser.getCurrentUser();
+
+        if (parseUser != null){
+            Intent intent = new Intent(getApplicationContext(),LocationsActivity.class);
+            startActivity(intent);
+        }
 
     }
 
