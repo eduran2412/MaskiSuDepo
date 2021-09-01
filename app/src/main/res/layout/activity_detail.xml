@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/imageview_detail_activity"
         android:layout_width="match_parent"
         android:layout_height="150dp"
         app:srcCompat="@drawable/ic_launcher_background"
